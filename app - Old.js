@@ -135,40 +135,6 @@ function renderHighscore() {
     row.innerHTML = `<td>${name}</td><td>${wins}</td>`;
     highscoreBody.appendChild(row);
   }
-// Ladda highscore vid sidstart från servern
-function loadHighscore() {
-  fetch("/highscore")
-    .then(res => res.json())
-    .then(data => renderHighscoreFromServer(data))
-    .catch(() => {}); // tyst felhantering
-}
-loadHighscore();
-
-function renderHighscoreFromServer(data) {
-  highscoreBody.innerHTML = "";
-  for (const [name, wins] of Object.entries(data)) {
-    const row = document.createElement("tr");
-    row.innerHTML = `<td>${name}</td><td>${wins}</td>`;
-    highscoreBody.appendChild(row);
-  }
-} //
-
-// Skicka vinnaren till servern när spelet slutar
-function endGame(winnerIndex) {
-  gameActive = false;
-  rollBtn.disabled = true;
-  holdBtn.disabled = true;
-  statusDiv.textContent = `${players[winnerIndex]} vann spelet!`;
-
-  fetch("/update_highscore", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ winner: players[winnerIndex] })
-  })
-    .then(res => res.json())
-    .then(data => renderHighscoreFromServer(data));
-}
-
 }
 
 // Ladda highscore vid start
