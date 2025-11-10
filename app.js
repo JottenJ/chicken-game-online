@@ -17,6 +17,8 @@ const player2Input = document.getElementById("player2");
 const targetInput = document.getElementById("target");
 
 const highscoreBody = document.getElementById("highscore-body");
+const overlay = document.getElementById("overlay");
+const overlayImg = overlay.querySelector("img");
 
 // Speldata
 let players = ["Spelare 1", "Spelare 2"];
@@ -28,6 +30,16 @@ let gameActive = false;
 
 // Highscore lagras i localStorage
 let highscores = JSON.parse(localStorage.getItem("chickenHighscores")) || {};
+
+// Overlay-funktion
+function showOverlay(imgSrc, callback) {
+  overlayImg.src = imgSrc;
+  overlay.style.display = "flex";
+  setTimeout(() => {
+    overlay.style.display = "none";
+    if (callback) callback();
+  }, 2000); // visas i 2 sekunder
+}
 
 // Starta spel
 startBtn.addEventListener("click", () => {
@@ -54,7 +66,6 @@ rollBtn.addEventListener("click", () => {
   diceDiv.textContent = roll;
 
   if (roll === 1) {
-    // Förlorar rundan
     roundScores[currentPlayer] = 0;
     switchPlayer();
   } else {
@@ -62,7 +73,9 @@ rollBtn.addEventListener("click", () => {
 
     // Bust direkt vid kast
     if (scores[currentPlayer] + roundScores[currentPlayer] > targetScore) {
-      endGame(currentPlayer === 0 ? 1 : 0);
+      showOverlay("bustjumpscare.png", () => {
+        endGame(currentPlayer === 0 ? 1 : 0);
+      });
     }
   }
 
@@ -77,13 +90,16 @@ holdBtn.addEventListener("click", () => {
   roundScores[currentPlayer] = 0;
 
   if (scores[currentPlayer] > targetScore) {
-    // Gått över målsumman → förlorar
-    endGame(currentPlayer === 0 ? 1 : 0);
+    showOverlay("bustjumpscare.png", () => {
+      endGame(currentPlayer === 0 ? 1 : 0);
+    });
   } else if (scores[currentPlayer] === targetScore) {
-    // Exakt målsumma → vinst
     endGame(currentPlayer);
   } else {
-    switchPlayer();
+    showOverlay("nice.png", () => {
+      switchPlayer();
+      updateUI();
+    });
   }
 
   updateUI();
@@ -115,7 +131,6 @@ function endGame(winnerIndex) {
   holdBtn.disabled = true;
   statusDiv.textContent = `${players[winnerIndex]} vann spelet!`;
 
-  // Skicka till server
   fetch("/update_highscore", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -125,7 +140,6 @@ function endGame(winnerIndex) {
   .then(data => renderHighscoreFromServer(data))
   .catch(error => {
       console.error("Kunde inte uppdatera highscore på servern:", error);
-      // Fallback till lokal lagring
       if (!highscores[players[winnerIndex]]) {
           highscores[players[winnerIndex]] = 0;
       }
@@ -160,7 +174,7 @@ function loadHighscore() {
     .then(data => renderHighscoreFromServer(data))
     .catch(err => {
       console.warn("Kunde inte hämta highscore från servern:", err);
-      renderHighscore(); // visa lokal highscore istället
+      renderHighscore();
     });
 }
 
@@ -175,4 +189,4 @@ function renderHighscoreFromServer(data) {
 
 // Kör vid sidstart
 loadHighscore();
-renderHighscore();
+renderHighscore

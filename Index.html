@@ -2,113 +2,65 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chickengame – Tvåspelarläge</title>
-  <meta name="description" content="Ett tvåspelarspel där man kastar tärning för att nå målsumma utan att gå över.">
-  <!-- Länka till din stilfil (kan ändras) -->
+  <title>Chicken Game</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Overlay för jumpscare/nice */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #overlay img {
+      max-width: 80%;
+      max-height: 80%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Chickengame</h1>
-    <p>Två spelare turas om att kasta tärning och samla poäng — gå inte över målsumman.</p>
-    <nav aria-label="Huvudmeny">
-      <ul>
-        <li><a href="#spel">Spel</a></li>
-        <li><a href="#highscore">Highscore</a></li>
-        <li><a href="#regler">Regler</a></li>
-      </ul>
-    </nav>
-  </header>
+  <h1>Chicken Game</h1>
+  <p>Två spelare turas om att kasta tärning. Gå inte över målsumman!</p>
 
-  <main id="spel">
-    <!-- Spelkonfiguration -->
-    <section aria-labelledby="konfig-titel">
-      <h2 id="konfig-titel">Konfiguration</h2>
-      <form id="setup-form">
-        <label>
-          Spelare 1 namn
-          <input type="text" id="player1" name="player1" placeholder="Spelare 1" required>
-        </label>
-        <label>
-          Spelare 2 namn
-          <input type="text" id="player2" name="player2" placeholder="Spelare 2" required>
-        </label>
-        <label>
-          Målsumma
-          <input type="number" id="target" name="target" value="100" min="10" max="500" required>
-        </label>
-        <button type="button" id="start-btn">Starta spel</button>
-      </form>
-    </section>
+  <div id="spel">
+    <form id="setup-form">
+      <label>Spelare 1: <input type="text" id="player1" required></label>
+      <label>Spelare 2: <input type="text" id="player2" required></label>
+      <label>Målsumma: <input type="number" id="target" value="100" min="10" max="500" required></label>
+      <button type="button" id="start-btn">Starta spel</button>
+    </form>
 
-    <!-- Spelbord -->
-    <section aria-labelledby="bord-titel">
-      <h2 id="bord-titel">Spelbord</h2>
+    <div id="status"></div>
+    <div id="dice">–</div>
+    <div id="controls">
+      <button type="button" id="roll-btn" disabled>Kasta</button>
+      <button type="button" id="hold-btn" disabled>Stanna</button>
+      <button type="button" id="reset-btn">Återställ</button>
+    </div>
 
-      <div id="status" role="status" aria-live="polite">
-        <!-- Exempel: Tur: Spelare 1 | Nuvarande kast: 0 | Total: 0 -->
-      </div>
+    <div id="scores">
+      <p>Spelare 1 total: <span id="p1-total">0</span></p>
+      <p>Spelare 2 total: <span id="p2-total">0</span></p>
+    </div>
 
-      <div id="dice-area">
-        <!-- Här visas tärningen (grafik eller siffra) -->
-        <div id="dice" aria-label="Tärning" role="img">–</div>
-      </div>
-
-      <div id="controls">
-        <button type="button" id="roll-btn" disabled>Kasta</button>
-        <button type="button" id="hold-btn" disabled>Stanna</button>
-        <button type="button" id="reset-btn">Återställ</button>
-      </div>
-
-      <div id="scores">
-        <article aria-labelledby="p1-titel">
-          <h3 id="p1-titel">Spelare 1</h3>
-          <p><strong>Runda:</strong> <span id="p1-round">0</span></p>
-          <p><strong>Total:</strong> <span id="p1-total">0</span></p>
-        </article>
-        <article aria-labelledby="p2-titel">
-          <h3 id="p2-titel">Spelare 2</h3>
-          <p><strong>Runda:</strong> <span id="p2-round">0</span></p>
-          <p><strong>Total:</strong> <span id="p2-total">0</span></p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Highscore -->
-    <section id="highscore" aria-labelledby="highscore-titel">
-      <h2 id="highscore-titel">Highscore</h2>
-      <p>Totalt antal vinster per spelare.</p>
-      <table aria-describedby="highscore-titel">
-        <thead>
-          <tr>
-            <th>Spelare</th>
-            <th>Vinster</th>
-          </tr>
-        </thead>
-        <tbody id="highscore-body">
-          <!-- Fylls på när spelet slutar -->
-        </tbody>
+    <section id="highscore">
+      <h2>Highscore</h2>
+      <table>
+        <thead><tr><th>Spelare</th><th>Vinster</th></tr></thead>
+        <tbody id="highscore-body"></tbody>
       </table>
     </section>
+  </div>
 
-    <!-- Regler -->
-    <section id="regler" aria-labelledby="regler-titel">
-      <h2 id="regler-titel">Regler</h2>
-      <ul>
-        <li><strong>Turordning:</strong> Spelare kastar tärning i tur och ordning.</li>
-        <li><strong>Poäng:</strong> Kastet adderas till spelarens runda-/totalsumma.</li>
-        <li><strong>Stanna:</strong> En spelare kan stanna och spara sin runda till total.</li>
-        <li><strong>Över målsumma:</strong> Går total över målsumman förlorar spelaren.</li>
-        <li><strong>Vinst:</strong> Först att nå exakt målsumma vinner (alternativt när motspelare spricker).</li>
-      </ul>
-    </section>
-  </main>
+  <!-- Overlay för jumpscare/nice -->
+  <div id="overlay"><img src="" alt="overlay"></div>
 
-  <footer>
-    <small>© 2025 Chickengame. Utseende redigeras via <code>styles.css</code>.</small>
-    <!-- Länka ditt skript när du bygger funktionalitet (nästa steg) -->
-    <!-- <script src="app.js"></script> -->
-  </footer>
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
+</html>
