@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Chicken Game</title>
   <link rel="stylesheet" href="Styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
     /* Overlay för jumpscare/nice */
     #overlay {
@@ -67,6 +68,18 @@
   <!-- Overlay för jumpscare/nice -->
   <div id="overlay"><img src="" alt="overlay"></div>
 
+  <!-- Effekter och ljud -->
+  <script src="effects.js"></script>
+  <script src="sound.js"></script>
   <script src="app.js"></script>
+
+  <!-- Starta effekter -->
+  <script>
+    window.addEventListener('load', () => {
+      window.particles = new ParticleSystem();
+      window.ambient = new AmbientBackground();
+      window.sounds = new SoundManager();
+    });
+  </script>
 </body>
 </html>
