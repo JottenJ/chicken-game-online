@@ -151,10 +151,10 @@ function endGame(winnerIndex) {
 
 // Uppdatera UI
 function updateUI() {
-  p1Round.textContent = roundScores[0];
-  p1Total.textContent = scores[0];
-  p2Round.textContent = roundScores[1];
-  p2Total.textContent = scores[1];
+  if (p1Round) p1Round.textContent = roundScores[0];
+  if (p1Total) p1Total.textContent = scores[0];
+  if (p2Round) p2Round.textContent = roundScores[1];
+  if (p2Total) p2Total.textContent = scores[1];
 }
 
 // Rendera highscore (lokal)
@@ -189,4 +189,4 @@ function renderHighscoreFromServer(data) {
 
 // Kör vid sidstart
 loadHighscore();
-renderHighscore
+renderHighscore();

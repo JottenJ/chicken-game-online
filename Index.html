@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Chicken Game</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="Styles.css">
   <style>
     /* Overlay för jumpscare/nice */
     #overlay {
@@ -45,8 +45,14 @@
     </div>
 
     <div id="scores">
-      <p>Spelare 1 total: <span id="p1-total">0</span></p>
-      <p>Spelare 2 total: <span id="p2-total">0</span></p>
+      <div class="score" id="player1-score">
+        <p>Spelare 1 tur: <span id="p1-round">0</span></p>
+        <p>Total: <span id="p1-total">0</span></p>
+      </div>
+      <div class="score" id="player2-score">
+        <p>Spelare 2 tur: <span id="p2-round">0</span></p>
+        <p>Total: <span id="p2-total">0</span></p>
+      </div>
     </div>
 
     <section id="highscore">
