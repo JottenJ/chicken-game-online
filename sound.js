@@ -10,11 +10,12 @@ class SoundManager {
     }
 
     async loadSounds() {
+        // Temporärt avaktiverade ljudfiler tills de finns
         const soundFiles = {
-            roll: 'sounds/roll.mp3',
-            win: 'sounds/win.mp3',
-            bust: 'sounds/bust.mp3',
-            bank: 'sounds/bank.mp3'
+            // roll: 'sounds/roll.mp3',
+            // win: 'sounds/win.mp3',
+            // bust: 'sounds/bust.mp3',
+            // bank: 'sounds/bank.mp3'
         };
 
         for (const [name, path] of Object.entries(soundFiles)) {

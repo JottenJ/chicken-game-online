@@ -20,7 +20,7 @@ class ParticleSystem {
         this.canvas.style.width = '100%';
         this.canvas.style.height = '100%';
         this.canvas.style.pointerEvents = 'none';
-        this.canvas.style.zIndex = '1';
+        this.canvas.style.zIndex = '2'; // Lägg partiklar över spelet
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
     }
@@ -110,7 +110,8 @@ class AmbientBackground {
         this.canvas.style.left = '0';
         this.canvas.style.width = '100%';
         this.canvas.style.height = '100%';
-        this.canvas.style.zIndex = '0';
+        this.canvas.style.zIndex = '-1'; // Lägg bakgrunden under allt
+        this.canvas.style.opacity = '0.8'; // Gör den lite transparent
         this.resizeCanvas();
         window.addEventListener('resize', () => this.resizeCanvas());
     }
