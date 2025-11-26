@@ -130,93 +130,36 @@ footer {
   color: #9aa1ad;
 }
 
-/* --- Animation & interactive styles --- */
-.score {
-  padding: 0.6rem;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.02);
-  transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
-}
-.score.active {
-  border: 3px solid #60a5fa; /* blå banner för aktiv spelare */
-  box-shadow: 0 8px 30px rgba(96,165,250,0.15);
-  transform: translateY(-4px);
-}
-
-.round-delta {
-  display: inline-block;
-  margin-left: 0.6rem;
-  color: #93c5fd;
-  font-weight: bold;
-  opacity: 0;
-  transform: translateX(6px);
-  transition: opacity 220ms ease, transform 220ms ease;
-}
-.round-delta.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* Button glow and press animation */
-button {
-  transition: box-shadow 220ms ease, transform 120ms ease;
-}
-button:hover {
-  box-shadow: 0 6px 18px rgba(34,197,94,0.14);
-}
-button.key-pressed {
-  transform: scale(0.98);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4) inset;
-}
-
-/* Flash states */
-.flash-bust {
-  animation: flashRed 900ms ease;
-}
-.flash-bank {
-  animation: flashGreen 700ms ease;
-}
-
-@keyframes flashRed {
-  0% { background-color: rgba(255,0,0,0.15); color: inherit }
-  50% { background-color: rgba(255,0,0,0.35); color: #fff }
-  100% { background-color: rgba(255,0,0,0.06); }
-}
-@keyframes flashGreen {
-  0% { background-color: rgba(34,197,94,0.12); }
-  50% { background-color: rgba(34,197,94,0.28); color: #042f1f }
-  100% { background-color: rgba(34,197,94,0.06); }
-}
-
-/* Win overlay animation */
-#overlay.win {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#overlay .win-card {
-  background: linear-gradient(135deg,#fde68a,#f97316);
-  padding: 2rem 3rem;
-  border-radius: 18px;
-  color: #08131a;
-  font-weight: 900;
-  font-size: 2rem;
-  text-align: center;
-  box-shadow: 0 30px 80px rgba(249,115,22,0.25);
-  animation: popWin 1200ms cubic-bezier(.2,.9,.3,1);
-}
-@keyframes popWin {
-  0% { transform: scale(.6) rotate(-6deg); opacity: 0 }
-  60% { transform: scale(1.03) rotate(2deg); opacity: 1 }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-/* decorative subtle glowing background for active area */
-.score:before {
-  content: "";
-  position: absolute;
+/* Chicken Idle Animation */
+#chicken-container {
+  position: fixed;
+  top: 35%;
+  transform: translateY(-50%);
+  z-index: 10;
   pointer-events: none;
 }
 
-/* make overlay image hidden by default when using win text */
-#overlay img { display: none; }
+#chicken-container.player1 {
+  left: 2rem;
+}
+
+#chicken-container.player2 {
+  right: 2rem;
+  transform: translateY(-50%) scaleX(-1);
+}
+
+#chicken-container img {
+  width: 380px;
+  height: 240px;
+  display: block;
+  animation: chickenBob 2s ease-in-out infinite;
+}
+
+@keyframes chickenBob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

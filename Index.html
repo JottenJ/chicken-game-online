@@ -2,9 +2,9 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Chicken Game</title>
-  <link rel="stylesheet" href="Styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <title>Chickengame – Tvåspelarläge</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
   <style>
     /* Overlay för jumpscare/nice */
     #overlay {
@@ -26,35 +26,45 @@
   </style>
 </head>
 <body>
-  <h1>Chicken Game</h1>
-  <p>Två spelare turas om att kasta tärning. Gå inte över målsumman!</p>
+  <header>
+    <h1>Chickengame</h1>
+    <p>Två spelare turas om att kasta tärning och samla poäng — gå inte över målsumman.</p>
+  </header>
 
-  <div id="spel" style="background: rgba(15, 23, 42, 0.95); padding: 2rem; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); position: relative; z-index: 1;">
-    <form id="setup-form">
-      <label>Spelare 1: <input type="text" id="player1" required></label>
-      <label>Spelare 2: <input type="text" id="player2" required></label>
-      <label>Målsumma: <input type="number" id="target" value="100" min="10" max="500" required></label>
-      <button type="button" id="start-btn">Starta spel</button>
-    </form>
+  <main id="spel">
+    <!-- Chicken idle animation -->
+    <div id="chicken-container"></div>
 
-    <div id="status"></div>
-    <div id="dice">–</div>
-    <div id="controls">
-      <button type="button" id="roll-btn" disabled>Kasta</button>
-      <button type="button" id="hold-btn" disabled>Stanna</button>
-      <button type="button" id="reset-btn">Återställ</button>
-    </div>
+    <section>
+      <form id="setup-form">
+        <label>Spelare 1 namn <input type="text" id="player1" required></label>
+        <label>Spelare 2 namn <input type="text" id="player2" required></label>
+        <label>Målsumma <input type="number" id="target" value="100" min="10" max="500" required></label>
+        <button type="button" id="start-btn">Starta spel</button>
+      </form>
+    </section>
 
-    <div id="scores">
-      <div class="score" id="player1-score">
-        <p>Spelare 1 tur: <span id="p1-round">0</span></p>
-        <p>Total: <span id="p1-total">0</span></p>
+    <section>
+      <div id="status"></div>
+      <div id="dice">–</div>
+      <div id="controls">
+        <button type="button" id="roll-btn" disabled>Kasta</button>
+        <button type="button" id="hold-btn" disabled>Stanna</button>
+        <button type="button" id="reset-btn">Återställ</button>
       </div>
-      <div class="score" id="player2-score">
-        <p>Spelare 2 tur: <span id="p2-round">0</span></p>
-        <p>Total: <span id="p2-total">0</span></p>
+      <div id="scores">
+        <article>
+          <h3>Spelare 1</h3>
+          <p>Runda: <span id="p1-round">0</span></p>
+          <p>Total: <span id="p1-total">0</span></p>
+        </article>
+        <article>
+          <h3>Spelare 2</h3>
+          <p>Runda: <span id="p2-round">0</span></p>
+          <p>Total: <span id="p2-total">0</span></p>
+        </article>
       </div>
-    </div>
+    </section>
 
     <section id="highscore">
       <h2>Highscore</h2>
@@ -63,23 +73,11 @@
         <tbody id="highscore-body"></tbody>
       </table>
     </section>
-  </div>
+  </main>
 
   <!-- Overlay för jumpscare/nice -->
   <div id="overlay"><img src="" alt="overlay"></div>
 
-  <!-- Effekter och ljud -->
-  <script src="effects.js"></script>
-  <script src="sound.js"></script>
   <script src="app.js"></script>
-
-  <!-- Starta effekter -->
-  <script>
-    window.addEventListener('load', () => {
-      window.particles = new ParticleSystem();
-      window.ambient = new AmbientBackground();
-      window.sounds = new SoundManager();
-    });
-  </script>
 </body>
 </html>

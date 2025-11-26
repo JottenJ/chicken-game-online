@@ -9,7 +9,7 @@ HIGHSCORE_FILE = "highscore.json"
 class MyHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/highscore":
-            # Läs highscore och skicka tillbaka
+            # Läs highscore
             if os.path.exists(HIGHSCORE_FILE):
                 with open(HIGHSCORE_FILE, "r", encoding="utf-8") as f:
                     highscores = json.load(f)
@@ -21,7 +21,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps(highscores, ensure_ascii=False).encode("utf-8"))
         else:
-            # Servera statiska filer (index.html, styles.css, app.js)
+            # Servera statiska filer (index.html, css, js, bilder)
             return super().do_GET()
 
     def do_POST(self):
@@ -52,7 +52,7 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             with open(HIGHSCORE_FILE, "w", encoding="utf-8") as f:
                 json.dump(highscores, f, ensure_ascii=False, indent=2)
 
-            # Svar
+            # Skicka svar
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
